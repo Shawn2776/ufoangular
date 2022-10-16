@@ -2,7 +2,8 @@
   <a routerLink="home">UFO Custom Covers</a>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon
-      [matBadge]="1"
+      [matBadge]="itemsQuantity"
+      [matBadgeHidden]="!itemsQuantity"
       matBadgeColor="warn"
     >shopping_cart
     </mat-icon>
@@ -10,29 +11,21 @@
   <mat-menu #menu="matMenu">
     <div class="p-3 divide-y divide-solid">
       <div class="pb-3 flex justify-between">
-        <span class="mr-16">1 item(s)</span>
+        <span class="mr-16">{{ itemsQuantity }} item(s)</span>
         <a routerLink="cart">View Cart</a>
       </div>
-      <div class="py-3">
-        <div class="flex justify-between font-light mb-2">
-          Keyboard x 1
-          <span class="font-bold">{{ '150' | currency }}</span>
+      <div *ngIf="cart.items.length" class="py-3">
+        <div *ngFor="let item of cart.items" class="flex justify-between font-light mb-2">
+          {{ item.name }} x {{ item.quantity }}
+          <span class="font-bold">{{ item.price | currency }}</span>
         </div>
-        <div class="flex justify-between font-light mb-2">
-          Clutch Cover x 1
-          <span class="font-bold">{{ '250.89' | currency }}</span>
         </div>
-        <div class="flex justify-between font-light mb-2">
-          Microphone x 1
-          <span class="font-bold">{{ '1.99' | currency }}</span>
-        </div>
-      </div>
       <div class="flex justify-between py-3 font-light">
         Total:
-        <span class="font-bold">{{ 402.88 | currency }}</span>
+        <span class="font-bold">{{ getTotal(cart.items) | currency }}</span>
       </div>
       <div class="pt-3 flex justify-between">
-          <button class="bg-rose-700 text-white rounded-full w-9 h-9 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300"><mat-icon>remove_shopping_cart</mat-icon></button>
+          <button (click)="onClearCart()" class="bg-rose-700 text-white rounded-full w-9 h-9 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300"><mat-icon>remove_shopping_cart</mat-icon></button>
           <button routerLink="cart" class="bg-green-600 rounded-full w-9 h-9 text-white hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300"><mat-icon>shopping_cart</mat-icon></button>
          
       </div>
